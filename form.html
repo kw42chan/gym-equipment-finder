@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Gym - GymFinder</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/form-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-dumbbell"></i> GymFinder</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="form.html" class="active btn-primary">Add Your Gym</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <h1>Add Your Gym to GymFinder</h1>
+                <p>Complete the form below to add your gym center to our database. This information will help users find your facility based on their equipment needs and training goals.</p>
+                
+                <form id="gym-submission-form">
+                    <div class="form-group">
+                        <h2>Basic Information</h2>
+                        
+                        <div class="input-group">
+                            <label for="gym-name">Gym Name *</label>
+                            <input type="text" id="gym-name" name="gym-name" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gym-address">Full Address *</label>
+                            <input type="text" id="gym-address" name="gym-address" placeholder="Street, City, State, ZIP" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gym-phone">Phone Number *</label>
+                            <input type="tel" id="gym-phone" name="gym-phone" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gym-website">Website</label>
+                            <input type="url" id="gym-website" name="gym-website" placeholder="https://yourgym.com">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gym-hours">Operating Hours *</label>
+                            <input type="text" id="gym-hours" name="gym-hours" placeholder="e.g., Mon-Fri: 6am-10pm, Sat-Sun: 8am-8pm" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gym-description">Gym Description *</label>
+                            <textarea id="gym-description" name="gym-description" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h2>Equipment Information</h2>
+                        <p>Select all equipment available at your facility:</p>
+                        
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-treadmill" name="equipment" value="treadmill">
+                                <label for="eq-treadmill">Treadmill</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-elliptical" name="equipment" value="elliptical">
+                                <label for="eq-elliptical">Elliptical</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-stationary-bike" name="equipment" value="stationary-bike">
+                                <label for="eq-stationary-bike">Stationary Bike</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-rowing-machine" name="equipment" value="rowing-machine">
+                                <label for="eq-rowing-machine">Rowing Machine</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-stair-climber" name="equipment" value="stair-climber">
+                                <label for="eq-stair-climber">Stair Climber</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-cross-trainer" name="equipment" value="cross-trainer">
+                                <label for="eq-cross-trainer">Cross Trainer</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-free-weights" name="equipment" value="free-weights">
+                                <label for="eq-free-weights">Free Weights</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-weight-machines" name="equipment" value="weight-machines">
+                                <label for="eq-weight-machines">Weight Machines</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-squat-rack" name="equipment" value="squat-rack">
+                                <label for="eq-squat-rack">Squat Rack</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-bench-press" name="equipment" value="bench-press">
+                                <label for="eq-bench-press">Bench Press</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-cable-machine" name="equipment" value="cable-machine">
+                                <label for="eq-cable-machine">Cable Machine</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-smith-machine" name="equipment" value="smith-machine">
+                                <label for="eq-smith-machine">Smith Machine</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-deadlift-platform" name="equipment" value="deadlift-platform">
+                                <label for="eq-deadlift-platform">Deadlift Platform</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-olympic-lifting-area" name="equipment" value="olympic-lifting-area">
+                                <label for="eq-olympic-lifting-area">Olympic Lifting Area</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-yoga-studio" name="equipment" value="yoga-studio">
+                                <label for="eq-yoga-studio">Yoga Studio</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-pilates-equipment" name="equipment" value="pilates-equipment">
+                                <label for="eq-pilates-equipment">Pilates Equipment</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-stretching-area" name="equipment" value="stretching-area">
+                                <label for="eq-stretching-area">Stretching Area</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-functional-training-area" name="equipment" value="functional-training-area">
+                                <label for="eq-functional-training-area">Functional Training Area</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eq-boxing-area" name="equipment" value="boxing-area">
+                                <label for="eq-boxing-area">Boxing Area</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="other-equipment">Other Equipment</label>
+                            <textarea id="other-equipment" name="other-equipment" rows="2" placeholder="List any additional equipment not mentioned above"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h2>Training Focus</h2>
+                        <p>Select all training categories available at your facility:</p>
+                        
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-cardio" name="training-focus" value="cardio">
+                                <label for="tf-cardio">Cardio</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-strength" name="training-focus" value="strength">
+                                <label for="tf-strength">Strength Training</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-flexibility" name="training-focus" value="flexibility">
+                                <label for="tf-flexibility">Flexibility</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-core" name="training-focus" value="core">
+                                <label for="tf-core">Core</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-upper-body" name="training-focus" value="upper-body">
+                                <label for="tf-upper-body">Upper Body</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tf-lower-body" name="training-focus" value="lower-body">
+                                <label for="tf-lower-body">Lower Body</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="other-training">Other Training Focus</label>
+                            <textarea id="other-training" name="other-training" rows="2" placeholder="List any additional training categories not mentioned above"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h2>Contact Information</h2>
+                        
+                        <div class="input-group">
+                            <label for="contact-name">Contact Person's Name *</label>
+                            <input type="text" id="contact-name" name="contact-name" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="contact-email">Contact Email *</label>
+                            <input type="email" id="contact-email" name="contact-email" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="contact-phone">Contact Phone *</label>
+                            <input type="tel" id="contact-phone" name="contact-phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h2>Additional Information</h2>
+                        
+                        <div class="input-group">
+                            <label for="additional-notes">Additional Notes</label>
+                            <textarea id="additional-notes" name="additional-notes" rows="3" placeholder="Any other information you'd like to share about your gym"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Submit Gym Information</button>
+                        <button type="reset" class="btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="google-form-section">
+        <div class="container">
+            <h2>Alternative Submission Method</h2>
+            <p>If you prefer, you can also submit your gym information through our Google Form:</p>
+            <div class="google-form-container">
+                <a href="https://forms.gle/exampleGymFinderForm" class="btn-primary" target="_blank">Open Google Form</a>
+                <p class="form-note">Note: The Google Form collects the same information as this form and will be processed in the same way.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><i class="fas fa-dumbbell"></i> GymFinder</h2>
+                    <p>Find the perfect gym equipment for your workout.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                        <li><a href="form.html">Add Your Gym</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GymFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/form.js"></script>
+</body>
+</html>

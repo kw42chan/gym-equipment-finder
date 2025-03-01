@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymFinder - Find Gym Equipment Near You</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-dumbbell"></i> GymFinder</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="form.html" class="btn-primary">Add Your Gym</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find the Perfect Gym Equipment</h1>
+                <p>Search for gyms with the equipment you need, based on location and training focus</p>
+                <div class="search-container">
+                    <div class="region-buttons">
+                        <button type="button" class="region-btn active" data-region="">All Regions</button>
+                        <button type="button" class="region-btn" data-region="Hong Kong Island">Hong Kong Island</button>
+                        <button type="button" class="region-btn" data-region="Kowloon">Kowloon</button>
+                        <button type="button" class="region-btn" data-region="New Territories">New Territories</button>
+                    </div>
+                    <div class="filter-container">
+                        <select id="equipment-filter">
+                            <option value="">All Equipment</option>
+                            <option value="treadmill">Treadmill</option>
+                            <option value="elliptical">Elliptical</option>
+                            <option value="stationary-bike">Stationary Bike</option>
+                            <option value="rowing-machine">Rowing Machine</option>
+                            <option value="free-weights">Free Weights</option>
+                            <option value="weight-machines">Weight Machines</option>
+                            <option value="squat-rack">Squat Rack</option>
+                            <option value="bench-press">Bench Press</option>
+                            <option value="cable-machine">Cable Machine</option>
+                            <option value="smith-machine">Smith Machine</option>
+                        </select>
+                        <select id="training-filter">
+                            <option value="">All Training Focus</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="strength">Strength Training</option>
+                            <option value="flexibility">Flexibility</option>
+                            <option value="core">Core</option>
+                            <option value="upper-body">Upper Body</option>
+                            <option value="lower-body">Lower Body</option>
+                        </select>
+                        <button id="search-btn" class="btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <div class="results-container">
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="results-list">
+                    <h2>Gyms Near You</h2>
+                    <div id="results-count">0 results found</div>
+                    <div id="gym-results">
+                        <!-- Results will be populated here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>About GymFinder</h2>
+            <p>GymFinder helps fitness enthusiasts find gyms with specific equipment based on their location and training needs. Whether you're looking for a gym with a squat rack, specialized cardio machines, or equipment for specific muscle groups, GymFinder makes it easy to find the perfect gym for your workout routine.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location-Based Search</h3>
+                    <p>Find gyms near you or in specific areas you're interested in.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Equipment Filters</h3>
+                    <p>Search for specific gym equipment to match your workout needs.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Training Focus</h3>
+                    <p>Filter gyms by training categories like cardio, strength, flexibility, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have questions or suggestions? Reach out to our team!</p>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><i class="fas fa-dumbbell"></i> GymFinder</h2>
+                    <p>Find the perfect gym equipment for your workout.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="form.html">Add Your Gym</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GymFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
