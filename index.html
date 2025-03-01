@@ -38,27 +38,18 @@
                         <button type="button" class="region-btn" data-region="New Territories">New Territories</button>
                     </div>
                     <div class="filter-container">
-                        <select id="equipment-filter">
-                            <option value="">All Equipment</option>
-                            <option value="treadmill">Treadmill</option>
-                            <option value="elliptical">Elliptical</option>
-                            <option value="stationary-bike">Stationary Bike</option>
-                            <option value="rowing-machine">Rowing Machine</option>
-                            <option value="free-weights">Free Weights</option>
-                            <option value="weight-machines">Weight Machines</option>
-                            <option value="squat-rack">Squat Rack</option>
-                            <option value="bench-press">Bench Press</option>
-                            <option value="cable-machine">Cable Machine</option>
-                            <option value="smith-machine">Smith Machine</option>
-                        </select>
-                        <select id="training-filter">
-                            <option value="">All Training Focus</option>
-                            <option value="cardio">Cardio</option>
-                            <option value="strength">Strength Training</option>
-                            <option value="flexibility">Flexibility</option>
-                            <option value="core">Core</option>
+                        <select id="body-parts-filter" onchange="updateEquipmentByBodyPart(this.value)">
+                            <option value="">All Body Parts</option>
                             <option value="upper-body">Upper Body</option>
                             <option value="lower-body">Lower Body</option>
+                            <option value="core">Core</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="flexibility">Flexibility</option>
+                            <option value="strength">Strength Training</option>
+                        </select>
+                        <select id="equipment-filter">
+                            <option value="">All Equipment</option>
+                            <!-- Equipment options will be populated based on body part selection -->
                         </select>
                         <button id="search-btn" class="btn-primary">Search</button>
                     </div>
@@ -165,5 +156,86 @@
 
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
+    
+    <script>
+        // Equipment by body part mapping
+        const equipmentByBodyPart = {
+            'upper-body': ['bench-press', 'cable-machine', 'free-weights', 'weight-machines',
+                          'rowing-machine', 'smith-machine', 'olympic-lifting-area',
+                          'functional-training-area', 'boxing-area'],
+            'lower-body': ['treadmill', 'elliptical', 'stationary-bike', 'stair-climber',
+                          'squat-rack', 'free-weights', 'weight-machines', 'smith-machine',
+                          'deadlift-platform', 'olympic-lifting-area', 'functional-training-area'],
+            'core': ['free-weights', 'weight-machines', 'cable-machine', 'functional-training-area',
+                    'yoga-studio', 'pilates-equipment', 'stretching-area'],
+            'cardio': ['treadmill', 'elliptical', 'stationary-bike', 'rowing-machine',
+                      'stair-climber', 'cross-trainer', 'functional-training-area', 'boxing-area'],
+            'flexibility': ['yoga-studio', 'pilates-equipment', 'stretching-area'],
+            'strength': ['free-weights', 'weight-machines', 'squat-rack', 'bench-press',
+                        'cable-machine', 'smith-machine', 'deadlift-platform',
+                        'olympic-lifting-area', 'functional-training-area']
+        };
+        
+        // Function to update equipment options based on selected body part
+        function updateEquipmentByBodyPart(selectedBodyPart) {
+            console.log('Body part changed to:', selectedBodyPart);
+            
+            const equipmentFilter = document.getElementById('equipment-filter');
+            
+            // Clear current options except the first one
+            while (equipmentFilter.options.length > 1) {
+                equipmentFilter.remove(1);
+            }
+            
+            // If no body part is selected, show all equipment options
+            if (!selectedBodyPart) {
+                console.log('No body part selected, showing all equipment');
+                Object.keys(equipmentTypes).forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = equipmentTypes[key].name;
+                    equipmentFilter.appendChild(option);
+                });
+                return;
+            }
+            
+            // Get equipment for the selected body part
+            const relevantEquipment = equipmentByBodyPart[selectedBodyPart] || [];
+            console.log(`Found ${relevantEquipment.length} equipment items for ${selectedBodyPart}`);
+            
+            // Add filtered equipment options
+            relevantEquipment.forEach(key => {
+                if (equipmentTypes[key]) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = equipmentTypes[key].name;
+                    equipmentFilter.appendChild(option);
+                }
+            });
+            
+            // If no equipment found for this body part, show a message
+            if (relevantEquipment.length === 0) {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "No specific equipment for this body part";
+                option.disabled = true;
+                equipmentFilter.appendChild(option);
+            }
+            
+            // Apply filters if filterResults function exists
+            if (typeof filterResults === 'function') {
+                filterResults();
+            }
+        }
+        
+        // Initialize equipment options when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize with the current selected value
+            const bodyPartsFilter = document.getElementById('body-parts-filter');
+            if (bodyPartsFilter) {
+                updateEquipmentByBodyPart(bodyPartsFilter.value);
+            }
+        });
+    </script>
 </body>
 </html>

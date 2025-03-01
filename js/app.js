@@ -31,9 +31,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Set up body parts filter event
+    const bodyPartsFilter = document.getElementById('body-parts-filter');
+    
+    // Use a simpler approach with just the change event
+    bodyPartsFilter.addEventListener('change', function() {
+        const selectedBodyPart = this.value;
+        console.log(`Body part changed to: ${selectedBodyPart}`);
+        
+        // Update equipment options based on selected body part
+        updateEquipmentForBodyPart(selectedBodyPart);
+    });
+    
     document.getElementById('equipment-filter').addEventListener('change', filterResults);
-    document.getElementById('training-filter').addEventListener('change', filterResults);
     document.getElementById('contact-form').addEventListener('submit', handleContactForm);
+    
+    // Initialize equipment options
+    updateEquipmentOptions("");
     
     // Initialize with all gyms
     filteredGyms = [...gymData];
@@ -42,7 +56,75 @@ document.addEventListener('DOMContentLoaded', function() {
     displayResults(filteredGyms);
     
     console.log('Application initialized with', gymData.length, 'gyms');
+    
+    // Add a manual trigger for the body parts filter change event
+    document.getElementById('body-parts-filter').onchange = function() {
+        const selectedBodyPart = this.value;
+        console.log(`Manual trigger - Body part changed to: ${selectedBodyPart}`);
+        updateEquipmentOptions(selectedBodyPart);
+    };
 });
+
+// Update equipment options based on selected body part
+function updateEquipmentOptions(selectedBodyPart) {
+    console.log(`Updating equipment options for body part: ${selectedBodyPart}`);
+    
+    const equipmentFilter = document.getElementById('equipment-filter');
+    if (!equipmentFilter) {
+        console.error("Equipment filter element not found!");
+        return;
+    }
+    
+    // Clear current options except the first one
+    while (equipmentFilter.options.length > 1) {
+        equipmentFilter.remove(1);
+    }
+    
+    // If no body part is selected, show all equipment options
+    if (!selectedBodyPart) {
+        console.log("No body part selected, showing all equipment");
+        Object.keys(equipmentTypes).forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = equipmentTypes[key].name;
+            equipmentFilter.appendChild(option);
+        });
+        return;
+    }
+    
+    // Debug: Check what equipment types are available
+    console.log(`Available equipment types: ${Object.keys(equipmentTypes).length}`);
+    
+    // Filter equipment that targets the selected body part
+    const relevantEquipment = Object.keys(equipmentTypes).filter(key => {
+        // Check if this equipment targets the selected body part
+        if (equipmentTypes[key].trainingFocus &&
+            equipmentTypes[key].trainingFocus.includes(selectedBodyPart)) {
+            console.log(`Equipment ${equipmentTypes[key].name} matches body part ${selectedBodyPart}`);
+            return true;
+        }
+        return false;
+    });
+    
+    console.log(`Found ${relevantEquipment.length} equipment items for ${selectedBodyPart}`);
+    
+    // Add filtered equipment options
+    relevantEquipment.forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = equipmentTypes[key].name;
+        equipmentFilter.appendChild(option);
+    });
+    
+    // If no equipment found for this body part, show a message
+    if (relevantEquipment.length === 0) {
+        const option = document.createElement('option');
+        option.value = "";
+        option.textContent = "No specific equipment for this body part";
+        option.disabled = true;
+        equipmentFilter.appendChild(option);
+    }
+}
 
 // Initialize Google Map
 function initMap() {
@@ -151,10 +233,10 @@ function searchGyms() {
     filterResults();
 }
 
-// Filter results based on region, equipment, and training focus
+// Filter results based on region, body parts, and equipment
 function filterResults() {
+    const bodyPartsFilter = document.getElementById('body-parts-filter').value;
     const equipmentFilter = document.getElementById('equipment-filter').value;
-    const trainingFilter = document.getElementById('training-filter').value;
     
     // Start with all gyms
     let results = [...gymData];
@@ -165,14 +247,16 @@ function filterResults() {
         console.log(`Filtering by region: ${selectedRegion}, found ${results.length} gyms`);
     }
     
+    // Apply body parts filter if selected
+    if (bodyPartsFilter) {
+        results = results.filter(gym => gym.trainingFocus.includes(bodyPartsFilter));
+        console.log(`Filtering by body part: ${bodyPartsFilter}, found ${results.length} gyms`);
+    }
+    
     // Apply equipment filter if selected
     if (equipmentFilter) {
         results = results.filter(gym => gym.equipment.includes(equipmentFilter));
-    }
-    
-    // Apply training focus filter if selected
-    if (trainingFilter) {
-        results = results.filter(gym => gym.trainingFocus.includes(trainingFilter));
+        console.log(`Filtering by equipment: ${equipmentFilter}, found ${results.length} gyms`);
     }
     
     // Update filtered gyms
@@ -210,8 +294,8 @@ function displayResults(gyms) {
             return `<span class="tag">${equipmentTypes[eq].name}</span>`;
         }).join('');
         
-        // Create training focus tags
-        const trainingTags = gym.trainingFocus.slice(0, 3).map(tf => {
+        // Create body parts tags
+        const bodyPartsTags = gym.trainingFocus.slice(0, 3).map(tf => {
             return `<span class="tag">${trainingFocusCategories[tf].name}</span>`;
         }).join('');
         
@@ -228,8 +312,8 @@ function displayResults(gyms) {
                 ${gym.equipment.length > 3 ? `<span class="tag">+${gym.equipment.length - 3} more</span>` : ''}
             </div>
             <div class="gym-training">
-                <h4>Training Focus:</h4>
-                ${trainingTags}
+                <h4>Parts of Body:</h4>
+                ${bodyPartsTags}
                 ${gym.trainingFocus.length > 3 ? `<span class="tag">+${gym.trainingFocus.length - 3} more</span>` : ''}
             </div>
             <div class="gym-actions">
@@ -288,3 +372,63 @@ function handleContactForm(event) {
 // Make functions available globally
 window.viewGymDetails = viewGymDetails;
 window.centerMapOnGym = centerMapOnGym;
+
+// Function to update equipment options based on selected body part (called from HTML)
+function updateEquipmentForBodyPart(selectedBodyPart) {
+    console.log(`Direct HTML call - Body part changed to: ${selectedBodyPart}`);
+    
+    const equipmentFilter = document.getElementById('equipment-filter');
+    
+    // Clear current options except the first one
+    while (equipmentFilter.options.length > 1) {
+        equipmentFilter.remove(1);
+    }
+    
+    // If no body part is selected, show all equipment options
+    if (!selectedBodyPart) {
+        console.log("No body part selected, showing all equipment");
+        Object.keys(equipmentTypes).forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = equipmentTypes[key].name;
+            equipmentFilter.appendChild(option);
+        });
+        return;
+    }
+    
+    // Filter equipment that targets the selected body part
+    const relevantEquipment = Object.keys(equipmentTypes).filter(key => {
+        // Check if this equipment targets the selected body part
+        if (equipmentTypes[key].trainingFocus &&
+            equipmentTypes[key].trainingFocus.includes(selectedBodyPart)) {
+            console.log(`Equipment ${equipmentTypes[key].name} matches body part ${selectedBodyPart}`);
+            return true;
+        }
+        return false;
+    });
+    
+    console.log(`Found ${relevantEquipment.length} equipment items for ${selectedBodyPart}`);
+    
+    // Add filtered equipment options
+    relevantEquipment.forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = equipmentTypes[key].name;
+        equipmentFilter.appendChild(option);
+    });
+    
+    // If no equipment found for this body part, show a message
+    if (relevantEquipment.length === 0) {
+        const option = document.createElement('option');
+        option.value = "";
+        option.textContent = "No specific equipment for this body part";
+        option.disabled = true;
+        equipmentFilter.appendChild(option);
+    }
+    
+    // Apply filters
+    filterResults();
+}
+
+// Make the function available globally
+window.updateEquipmentForBodyPart = updateEquipmentForBodyPart;

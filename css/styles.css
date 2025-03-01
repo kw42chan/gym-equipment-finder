@@ -1,7 +1,7 @@
 /* Global Styles */
 :root {
-    --primary-color: #4CAF50;
-    --secondary-color: #2E7D32;
+    --primary-color: #23c6c3;
+    --secondary-color: #1a9e9b;
     --accent-color: #FF9800;
     --text-color: #333;
     --light-gray: #f4f4f4;
@@ -178,7 +178,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .region-btn:hover {
-    background-color: rgba(76, 175, 80, 0.1);
+    background-color: rgba(35, 198, 195, 0.1);
 }
 
 .region-btn.active {

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #23c6c3;
+        }
+        select {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #23c6c3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-container select {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Filter Test</h1>
+    <p>Select a body part to see the equipment options update:</p>
+    
+    <div class="filter-container">
+        <select id="body-parts-filter">
+            <option value="">All Body Parts</option>
+            <option value="upper-body">Upper Body</option>
+            <option value="lower-body">Lower Body</option>
+            <option value="core">Core</option>
+            <option value="cardio">Cardio</option>
+            <option value="flexibility">Flexibility</option>
+            <option value="strength">Strength Training</option>
+        </select>
+        
+        <select id="equipment-filter">
+            <option value="">All Equipment</option>
+            <!-- Equipment options will be populated based on body part selection -->
+        </select>
+        
+        <button id="search-btn">Search</button>
+    </div>
+    
+    <div id="results">
+        <p>Select filters to see results</p>
+    </div>
+    
+    <script>
+        // Equipment types with descriptions
+        const equipmentTypes = {
+            "treadmill": {
+                name: "Treadmill",
+                description: "Running or walking machine for cardio workouts",
+                trainingFocus: ["cardio", "lower-body"]
+            },
+            "elliptical": {
+                name: "Elliptical",
+                description: "Low-impact cardio machine that simulates walking, running, or stair climbing",
+                trainingFocus: ["cardio", "lower-body"]
+            },
+            "stationary-bike": {
+                name: "Stationary Bike",
+                description: "Indoor cycling machine for cardio workouts",
+                trainingFocus: ["cardio", "lower-body"]
+            },
+            "rowing-machine": {
+                name: "Rowing Machine",
+                description: "Full-body cardio machine that simulates rowing",
+                trainingFocus: ["cardio", "upper-body", "core", "lower-body"]
+            },
+            "stair-climber": {
+                name: "Stair Climber",
+                description: "Cardio machine that simulates climbing stairs",
+                trainingFocus: ["cardio", "lower-body"]
+            },
+            "cross-trainer": {
+                name: "Cross Trainer",
+                description: "Full-body cardio machine combining features of elliptical, stair climber, and bike",
+                trainingFocus: ["cardio", "upper-body", "lower-body"]
+            },
+            "free-weights": {
+                name: "Free Weights",
+                description: "Dumbbells, barbells, and weight plates for strength training",
+                trainingFocus: ["strength", "upper-body", "lower-body", "core"]
+            },
+            "weight-machines": {
+                name: "Weight Machines",
+                description: "Guided resistance machines for targeted strength training",
+                trainingFocus: ["strength", "upper-body", "lower-body"]
+            },
+            "squat-rack": {
+                name: "Squat Rack",
+                description: "Equipment for performing barbell squats and other compound exercises",
+                trainingFocus: ["strength", "lower-body", "core"]
+            },
+            "bench-press": {
+                name: "Bench Press",
+                description: "Equipment for performing chest and upper body pressing exercises",
+                trainingFocus: ["strength", "upper-body"]
+            },
+            "cable-machine": {
+                name: "Cable Machine",
+                description: "Versatile machine using cables and pulleys for various exercises",
+                trainingFocus: ["strength", "upper-body", "lower-body", "core"]
+            },
+            "smith-machine": {
+                name: "Smith Machine",
+                description: "Barbell fixed within steel rails for guided lifting",
+                trainingFocus: ["strength", "upper-body", "lower-body"]
+            },
+            "deadlift-platform": {
+                name: "Deadlift Platform",
+                description: "Specialized platform for performing deadlifts",
+                trainingFocus: ["strength", "lower-body", "core", "upper-body"]
+            },
+            "olympic-lifting-area": {
+                name: "Olympic Lifting Area",
+                description: "Dedicated space for Olympic weightlifting movements",
+                trainingFocus: ["strength", "lower-body", "upper-body", "core"]
+            },
+            "yoga-studio": {
+                name: "Yoga Studio",
+                description: "Dedicated space for yoga practice",
+                trainingFocus: ["flexibility", "core"]
+            },
+            "pilates-equipment": {
+                name: "Pilates Equipment",
+                description: "Specialized equipment for Pilates exercises",
+                trainingFocus: ["flexibility", "core"]
+            },
+            "stretching-area": {
+                name: "Stretching Area",
+                description: "Dedicated space for stretching and mobility work",
+                trainingFocus: ["flexibility"]
+            },
+            "functional-training-area": {
+                name: "Functional Training Area",
+                description: "Space for functional movement exercises with equipment like kettlebells, medicine balls, and TRX",
+                trainingFocus: ["strength", "cardio", "core", "flexibility"]
+            },
+            "boxing-area": {
+                name: "Boxing Area",
+                description: "Space with punching bags and boxing equipment",
+                trainingFocus: ["cardio", "upper-body", "core"]
+            }
+        };
+        
+        // Function to update equipment options based on selected body part
+        function updateEquipmentOptions(selectedBodyPart) {
+            console.log('Body part changed to:', selectedBodyPart);
+            
+            const equipmentFilter = document.getElementById('equipment-filter');
+            
+            // Clear current options except the first one
+            while (equipmentFilter.options.length > 1) {
+                equipmentFilter.remove(1);
+            }
+            
+            // If no body part is selected, show all equipment options
+            if (!selectedBodyPart) {
+                console.log('No body part selected, showing all equipment');
+                Object.keys(equipmentTypes).forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = equipmentTypes[key].name;
+                    equipmentFilter.appendChild(option);
+                });
+                return;
+            }
+            
+            // Filter equipment that targets the selected body part
+            const relevantEquipment = Object.keys(equipmentTypes).filter(key => {
+                return equipmentTypes[key].trainingFocus && 
+                       equipmentTypes[key].trainingFocus.includes(selectedBodyPart);
+            });
+            
+            console.log(`Found ${relevantEquipment.length} equipment items for ${selectedBodyPart}`);
+            
+            // Add filtered equipment options
+            relevantEquipment.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = equipmentTypes[key].name;
+                equipmentFilter.appendChild(option);
+            });
+            
+            // If no equipment found for this body part, show a message
+            if (relevantEquipment.length === 0) {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "No specific equipment for this body part";
+                option.disabled = true;
+                equipmentFilter.appendChild(option);
+            }
+        }
+        
+        // Add change event listener to body parts filter
+        const bodyPartsFilter = document.getElementById('body-parts-filter');
+        
+        // Direct onchange attribute
+        bodyPartsFilter.onchange = function() {
+            const selectedValue = this.value;
+            console.log('Direct onchange - Body part changed to:', selectedValue);
+            updateEquipmentOptions(selectedValue);
+            updateResults();
+        };
+        
+        // Also add a click handler for each option
+        Array.from(bodyPartsFilter.options).forEach(option => {
+            option.onclick = function() {
+                console.log('Option clicked:', this.value);
+                // Force the select to update its value
+                bodyPartsFilter.value = this.value;
+                // Manually trigger the change
+                updateEquipmentOptions(this.value);
+                updateResults();
+            };
+        });
+        
+        // Add change event listener to equipment filter
+        document.getElementById('equipment-filter').addEventListener('change', function() {
+            updateResults();
+        });
+        
+        // Add click event listener to search button
+        document.getElementById('search-btn').addEventListener('click', function() {
+            updateResults();
+        });
+        
+        // Function to update results
+        function updateResults() {
+            const bodyPart = document.getElementById('body-parts-filter').value;
+            const equipment = document.getElementById('equipment-filter').value;
+            
+            let resultsText = '';
+            
+            if (bodyPart && equipment) {
+                resultsText = `Showing gyms with ${equipmentTypes[equipment].name} for ${bodyPart} training`;
+            } else if (bodyPart) {
+                resultsText = `Showing gyms with equipment for ${bodyPart} training`;
+            } else if (equipment) {
+                resultsText = `Showing gyms with ${equipmentTypes[equipment].name}`;
+            } else {
+                resultsText = 'Showing all gyms';
+            }
+            
+            document.getElementById('results').innerHTML = `<p>${resultsText}</p>`;
+        }
+        
+        // Initialize equipment options
+        updateEquipmentOptions('');
+    </script>
+</body>
+</html>
